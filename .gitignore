@@ -1,0 +1,35 @@
+### Java + Maven ###
+*.class
+*.jar
+*.war
+*.ear
+target/
+ 
+### IntelliJ ###
+*.iml
+*.ipr
+*.iws
+.idea/
+ 
+### VSCode ###
+.vscode/
+ 
+### Eclipse ###
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+ 
+### Sonic and Sonarqube ###
+.sonic
+.scannerwork
