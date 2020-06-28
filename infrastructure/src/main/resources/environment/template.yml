@@ -45,7 +45,6 @@ Globals:
         solution: !Ref Solution
         environment: !Ref Environment
 
-
 Resources:
   DaianaReportsLambdaFunction:
     Type: 'AWS::Serverless::Function'
