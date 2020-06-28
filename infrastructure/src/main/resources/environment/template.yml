@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: The stack for DaianaReportsLambdaFunction
+Parameters:
+  Zone:
+    Type: String
+  Site:
+    Type: String
+  Solution:
+    Type: String
+  Environment:
+    Type: String
+  Component:
+    Type: String
+  ComponentShortName:
+    Type: String
+  Version:
+    Type: String
+  ConfigEndpoints:
+    Type: String
+  ConfigRole:
+    Type: String
+  GlobalPrefix:
+    Type: String
+  RegionalPrefix:
+    Type: String
+
+
+Globals:
+  DaianaReportsLambdaFunction:
+    Type: 'AWS::Serverless::Function'
+    Runtime: java8
+    MemorySize: 1024
+    Timeout: 60
+    CodeUri:
+      Bucket: !Sub "bucket.delambda.prod.de.${Site}.wcar.aws.wcar-i.net"
+      Key: !Sub "lambda/code/${Component}/${Version}/daianareports-lambda-${Version}-jar-with-dependencies.jar"
+    Environment:
+      Variables:
+        component: !Ref Component
+        componentShortName: !Ref ComponentShortName
+        version: !Ref Version
+        zone: !Ref Zone
+        site: !Ref Site
+        solution: !Ref Solution
+        environment: !Ref Environment
+
+
+Resources:
+  DaianaReportsLambdaFunction:
+    Type: 'AWS::Serverless::Function'
+             Properties:
+               Runtime: java8
+               Handler: com.wirelesscar.daiana.function.DaianaReportsLambda::handleRequest
+               Code:
+                Bucket: !Sub "bucket.delambda.prod.de.${Site}.wcar.aws.wcar-i.net"
+                Key: !Sub "lambda/code/${Component}/${Version}/daianareports-lambda-function${Version}-jar-with-dependencies.jar"
+               Events:
+                 DaianaReportsSchedule:
+                   Type:Schedule
+                   Properties:
+                     Schedule:rate(1 day)

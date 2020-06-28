@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <Appenders>
+    <Console name="Console">
+      <JsonLayout properties="true" compact="true" eventEol="true"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Logger name="template" level="DEBUG"/>
+    <Logger name="com.wirelesscar.config" level="INFO"/>
+    <Logger name="com.wirelesscar.deliveryengine" level="INFO"/>
+    <Logger name="com.wirelesscar.daiana.functions" level="INFO"/>
+    <Root level="WARN">
+      <AppenderRef ref="Console" level="DEBUG" />
+    </Root>
+  </Loggers>
+</Configuration>

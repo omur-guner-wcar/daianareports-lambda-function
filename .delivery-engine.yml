@@ -1,0 +1,42 @@
+domain: mbcs
+pipe: sonic
+name: daianareports-lambda-function
+shortname: daireplam
+jdk: JDK8
+
+tags:
+  build:
+    language: java8
+    build-tool: maven
+  release:
+    language: java8
+    release-tool-artifacts: maven
+  deploy:
+    deploy-tool: delivery-engine-aws-tools
+  launch:
+    container: lambda
+    launch-tool-artifacts: delivery-engine
+
+tasks:
+  build:
+    - sonic-maven331 -B clean versions:set -DnewVersion=${semantic_version}
+    - sonic-maven331 -B -U install
+  release:
+    - sonic-maven331 deploy -DskipTests --batch-mode -DaltDeploymentRepository=${maven_release_repository}
+  launch:
+    - sonic-maven331 dependency:get \
+      -Dartifact=com.wirelesscar.daiana:${component}-functions:${version}:jar:jar-with-dependencies \
+      -Dtransitive=false \
+      -Ddest=function.zip
+    - sonic-simple-cloudformation package
+    - sonic-jarvis-client launch --mutable infrastructure/src/main/resources/environment/template.yml
+  destroy:
+    - sonic-jarvis-client destroy --mutable
+sequences:
+  auto-deploy:
+    - deploy:
+        context:
+          zone: wcar
+          site: eu-west-1
+          solution: mbcs
+          environment: int
